@@ -44,5 +44,11 @@ router.post("/", async (req, res, next) => {
     });
 });
 
+// DELETE /api/session
+// delete token to end session
+router.delete("/", (_req, res, next) => {
+    res.clearCookie("token");
+    return res.json({ message: "Logout Success" });
+});
 
 module.exports = router;
