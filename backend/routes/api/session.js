@@ -51,4 +51,22 @@ router.delete("/", (_req, res, next) => {
     return res.json({ message: "Logout Success" });
 });
 
+// GET /api/session
+router.get("/", (req, res, next) => {
+    const { user } = req;
+
+    // when user session exists
+    if(user) {
+        const safeUser = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+        };
+
+        return res.json({user: safeUser})
+    } else {
+        return res.json({ user: null })
+    }
+});
+
 module.exports = router;
