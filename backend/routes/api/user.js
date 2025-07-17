@@ -20,6 +20,11 @@ const validateSignup = [
         .not()
         .isEmail()
         .withMessage("Username cannot be an email"),
+    check("firstname")
+        .exists({ checkFalsy: true })
+        .not()
+        .isEmail()
+        .withMessage("Please provide a real name"),
     check("password")
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
@@ -27,14 +32,19 @@ const validateSignup = [
     handleValidationErrors
 ];
 
+// signup
 router.post("/", validateSignup, async (req, res, next) => {
-    const { email, password, username } = req.body;
+    // destructure the body of request
+    const { email, firstname, lastname, password, username } = req.body;
+
 
     // seed the model
     // hash the password
     const newUser = await User.create({
         email: email,
-        username, username,
+        username: username,
+        firstname: firstname,
+        ...(lastname && {lastname}),
         hashedPassword: bcrypt.hashSync(password)
     });
 

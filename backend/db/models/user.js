@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Entry, { foreignKey: "userId" });
     }
   }
   User.init({
@@ -26,6 +26,31 @@ module.exports = (sequelize, DataTypes) => {
         notEmail(value) {
           if(validator.isEmail(value)) {
             throw new Error("Invalid username, should not be email")
+          }
+        }
+      }
+    },
+    firstname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 50],
+        notEmpty: true,
+        notEmail(value) {
+          if(validator.isEmail(value)) {
+            throw new Error("Invalid first name, should not be email")
+          }
+        }
+      }
+    },
+    lastname: {
+      type: DataTypes.STRING,
+      validate: {
+        len: [0, 50],
+        notEmpty: false,
+        notEmail(value) {
+          if(validator.isEmail(value)) {
+            throw new Error("Invalid last name, should not be email")
           }
         }
       }
